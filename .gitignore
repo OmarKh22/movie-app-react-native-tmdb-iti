@@ -1,15 +1,14 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
 # dependencies
 node_modules/
 
 # Expo
 .expo/
+.expo-shared/
 dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# Native build artifacts
 .kotlin/
 *.orig.*
 *.jks
@@ -21,7 +20,7 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
-# debug
+# Debug files
 npm-debug.*
 yarn-debug.*
 yarn-error.*
@@ -30,12 +29,12 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# Local environment files
+.env
 .env*.local
 
-# typescript
+# TypeScript
 *.tsbuildinfo
-<<<<<<< HEAD
-=======
-movie-app-react-native-tmdb-iti/ 
->>>>>>> detailes
+
+# Ignore project build artifacts if needed (adjust path)
+movie-app-react-native-tmdb-iti/

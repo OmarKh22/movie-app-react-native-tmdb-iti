@@ -1,70 +1,88 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, ActivityIndicator, Platform, StatusBar as RNStatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import Header from '../components/Header';
+import SearchBox from '../components/SearchBox';
 import MovieCard from '../components/MovieCard';
-import Pagination from '../components/Pagination';
 import { fetchNowPlaying } from '../api/tmdb';
-
-const ACCENT = '#ffe066';
 
 const HomeScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPageNumber, setTotalPageNumber] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [recommendFavorites, setRecommendFavorites] = useState({});
 
-  const loadMovies = async (pageNum) => {
-    setLoading(true);
-    const data = await fetchNowPlaying(pageNum);
-    setMovies(data.results);
-    setPage(data.page);
-    setTotalPages(data.total_pages);
-    setLoading(false);
+  const handleSearch = (query) => {
+    if (!query.trim()) return;
+    navigation.navigate('Search', { query: query.trim() });
   };
 
   useEffect(() => {
-    loadMovies(page);
-  }, [page]);
+    const fetchMovies = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchNowPlaying(pageNumber);
+        setMovies(data.results);
+        setTotalPageNumber(data.total_pages);
+      } catch (error) {
+        console.error('Error fetching movies:', error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMovies();
+  }, [pageNumber]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fafafa' }}>
-      {/* Colored status bar area */}
-      <View style={{ height: Platform.OS === 'android' ? RNStatusBar.currentHeight : 44, backgroundColor: ACCENT }} />
-      <Header 
-        title="Movie App" 
-        favoriteCount={Object.values(recommendFavorites).filter(Boolean).length}
-        onWishlistPress={() => { /* TODO: navigate to wishlist screen */ }}
-      />
+    <ScrollView contentContainerStyle={styles.container}>
+      <Header />
+
+      <SearchBox onSearch={handleSearch} />
+
+      <Text style={styles.heading}>Now Playing</Text>
+
       {loading ? (
-        <ActivityIndicator size="large" style={{ marginTop: 32 }} />
+        <ActivityIndicator size="large" color="#000" style={{ marginTop: 20 }} />
       ) : (
-        <FlatList
-          data={movies}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
+        <View style={styles.grid}>
+          {movies.map((movie) => (
             <MovieCard
-              movie={item}
-              onPress={() => navigation.navigate('MovieDetail', { id: item.id })}
-              favorite={!!recommendFavorites[item.id]}
-              onFavoritePress={() => {
-                setRecommendFavorites(favs => ({
-                  ...favs,
-                  [item.id]: !favs[item.id]
-                }));
-              }}
+              key={movie.id}
+              movie={movie}
+              onPress={() => navigation.navigate('MovieDetail', { id: movie.id })}
             />
-          )}
-        />
+          ))}
+        </View>
       )}
-      <Pagination
-        page={page}
-        totalPages={totalPages}
-        onPrev={() => setPage((p) => Math.max(1, p - 1))}
-        onNext={() => setPage((p) => Math.min(totalPages, p + 1))}
-      />
-    </View>
+    </ScrollView>
   );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 40,
+    backgroundColor: '#fff',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    rowGap: 12,
+    columnGap: 8,
+    paddingHorizontal: 16,
+  },
+});
