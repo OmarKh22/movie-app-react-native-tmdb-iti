@@ -5,24 +5,41 @@ import { StatusBar } from 'expo-status-bar'; // ✅ Add this
 import HomeScreen from './src/screens/HomeScreen';
 import MovieDetailScreen from './src/screens/MovieDetailScreen';
 import SearchScreen from './src/screens/SearchScreen';
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from 'react-native';
+
+
 // import WishlistScreen from './src/screens/WishlistScreen';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <>
-      {/* ✅ Hide the status bar */}
-      <StatusBar hidden />
-
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="MovieDetail" component={MovieDetailScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} />
-          {/* <Stack.Screen name="Wishlist" component={WishlistScreen} /> */}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <SafeAreaProvider>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#FFE353" }}
+        edges={["top", "left", "right"]}
+      >
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="MovieDetail" component={MovieDetailScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fafafa", // أو أي لون خلفية عام
+  },
+});
+
