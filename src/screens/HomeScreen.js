@@ -10,6 +10,7 @@ import Header from '../components/Header';
 import SearchBox from '../components/SearchBox';
 import MovieCard from '../components/MovieCard';
 import { fetchNowPlaying } from '../api/tmdb';
+import Pagination from '../components/Pagination';
 
 const HomeScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -60,6 +61,7 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </View>
       )}
+      <Pagination totalPageNumber={totalPageNumber} pageNumber={pageNumber} setPageNumber={setPageNumber} />
     </ScrollView>
   );
 };
