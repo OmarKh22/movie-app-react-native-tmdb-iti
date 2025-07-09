@@ -1,15 +1,31 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import VoteCircle from './VoteCircle';
-
+import React from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import VoteCircle from "./VoteCircle";
+import { useWatchlist } from "../context/WatchlistContext";
 const MovieCard = ({ movie, onPress }) => {
+  const { toggleWatchlist, isInWatchlist } = useWatchlist();
+  const added = isInWatchlist(movie);
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPress}
+      activeOpacity={0.85}
+    >
       <View style={styles.posterWrap}>
         <Image
-          source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          }}
           style={styles.image}
         />
+        <TouchableOpacity
+          onPress={() => toggleWatchlist(movie)}
+          style={styles.heartIcon}
+        >
+          <Text style={[styles.heart, added && styles.activeHeart]}>
+            {added ? "💛" : "🤍"}
+          </Text>
+        </TouchableOpacity>
         <View style={styles.dotsWrap}>
           <Text style={styles.dots}>⋯</Text>
         </View>
@@ -30,7 +46,7 @@ const MovieCard = ({ movie, onPress }) => {
 const styles = StyleSheet.create({
   card: {
     width: 150,
-    height: 280,
+    height: 240,
     marginHorizontal: 10,
     backgroundColor: "transparent",
     borderRadius: 20,
@@ -94,7 +110,7 @@ const styles = StyleSheet.create({
   },
   info: {
     width: "100%",
-    height: 110,
+    height: 80,
     backgroundColor: "#fff",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,

@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Header />
+      <Header onWishlistPress={() => navigation.navigate("Watchlist")} />
 
       <SearchBox onSearch={handleSearch} />
 
