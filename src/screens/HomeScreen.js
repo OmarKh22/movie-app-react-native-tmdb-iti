@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-} from 'react-native';
-import Header from '../components/Header';
-import SearchBox from '../components/SearchBox';
-import MovieCard from '../components/MovieCard';
-import { fetchNowPlaying } from '../api/tmdb';
-import Pagination from '../components/Pagination';
+} from "react-native";
+import Header from "../components/Header";
+import SearchBox from "../components/SearchBox";
+import MovieCard from "../components/MovieCard";
+import { fetchNowPlaying } from "../api/tmdb";
 
 const HomeScreen = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -20,7 +19,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleSearch = (query) => {
     if (!query.trim()) return;
-    navigation.navigate('Search', { query: query.trim() });
+    navigation.navigate("Search", { query: query.trim() });
   };
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
         setMovies(data.results);
         setTotalPageNumber(data.total_pages);
       } catch (error) {
-        console.error('Error fetching movies:', error.message);
+        console.error("Error fetching movies:", error.message);
       } finally {
         setLoading(false);
       }
@@ -42,26 +41,31 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Header />
+      <Header onWishlistPress={() => navigation.navigate("Watchlist")} />
 
       <SearchBox onSearch={handleSearch} />
 
       <Text style={styles.heading}>Now Playing</Text>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#000" style={{ marginTop: 20 }} />
+        <ActivityIndicator
+          size="large"
+          color="#000"
+          style={{ marginTop: 20 }}
+        />
       ) : (
         <View style={styles.grid}>
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
               movie={movie}
-              onPress={() => navigation.navigate('MovieDetail', { id: movie.id })}
+              onPress={() =>
+                navigation.navigate("MovieDetail", { id: movie.id })
+              }
             />
           ))}
         </View>
       )}
-      <Pagination totalPageNumber={totalPageNumber} pageNumber={pageNumber} setPageNumber={setPageNumber} />
     </ScrollView>
   );
 };
@@ -71,18 +75,18 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 40,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
     paddingHorizontal: 16,
   },
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     rowGap: 12,
     columnGap: 8,
     paddingHorizontal: 16,

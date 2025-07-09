@@ -18,7 +18,9 @@ const MovieCard = ({ movie, onPress }) => {
         </View>
       </View>
       <View style={styles.info}>
-        <Text style={styles.title} numberOfLines={2}>{movie.title}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {movie.title}
+        </Text>
         <Text style={styles.date}>{movie.release_date}</Text>
       </View>
     </TouchableOpacity>
@@ -30,78 +32,92 @@ const styles = StyleSheet.create({
     width: 150,
     height: 280,
     marginHorizontal: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     borderRadius: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.13,
     shadowRadius: 10,
     elevation: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   posterWrap: {
-    width: '100%',
+    width: "100%",
     height: 170,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#eee',
+    overflow: "hidden",
+    position: "relative",
+    backgroundColor: "#eee",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
+  heartIcon: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    zIndex: 10,
+  },
+  heart: {
+    fontSize: 20,
+  },
+  activeHeart: {
+    fontSize: 20,
+    color: "#FFD700",
+  },
+
   voteCircleWrap: {
-    position: 'absolute',
+    position: "absolute",
     left: 8,
     bottom: 8,
     zIndex: 2,
   },
   dotsWrap: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
     zIndex: 2,
-    backgroundColor: 'rgba(255,255,255,0.85)',
+    backgroundColor: "rgba(255,255,255,0.85)",
     borderRadius: 12,
     paddingHorizontal: 6,
     paddingVertical: 2,
   },
   dots: {
     fontSize: 18,
-    color: '#444',
-    fontWeight: 'bold',
+    color: "#444",
+    fontWeight: "bold",
   },
   info: {
-    width: '100%',
+    width: "100%",
     height: 110,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 14,
     paddingBottom: 12,
     marginTop: -8,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#111',
+    fontWeight: "bold",
+    color: "#111",
     marginBottom: 2,
-    textAlign: 'center',
-    maxWidth: '90%',
+    textAlign: "center",
+    maxWidth: "90%",
   },
   date: {
     fontSize: 13,
-    color: '#888',
-    textAlign: 'center',
+    color: "#888",
+    textAlign: "center",
     marginTop: 2,
-    maxWidth: '90%',
+    maxWidth: "90%",
   },
 });
 
